@@ -9,7 +9,15 @@ ncpList ist eine moderne, mobile-first Einkaufslisten-App, die auf Symfony 8 bas
 *   **PHP:** 8.4 oder höher
 *   **Composer:** Aktuelle Version
 *   **SQLite:** (Standardmäßig konfiguriert)
-*   **OpenSSL:** Für die JWT-Verschlüsselung
+*   **PHP-Extensions:**
+    *   `openssl` — Für HTTPS/TLS und JWT-Verschlüsselung
+    *   `sodium` — Für Kryptografie (von lcobucci/jwt benötigt)
+
+> **Wichtig:** Diese Extensions müssen in der `php.ini` aktiviert sein:
+> ```ini
+> extension=openssl
+> extension=sodium
+> ```
 
 ---
 

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einkaufsliste - ncpList{% endblock %}
+
+{% block body %}
+    <div data-controller="shopping-list" data-shopping-list-id-value="{{ listId }}">
+        <div style="margin-bottom: 1rem;">
+            <a href="/" class="btn btn-primary" style="padding: 0.5rem 1rem;">&larr; Zurück</a>
+        </div>
+
+        <div class="card">
+            <h2 id="list-name-display">Lade Liste...</h2>
+            <div class="flex" style="display: flex; gap: 0.5rem;">
+                <input type="text" data-shopping-list-target="newItemName" placeholder="Artikel hinzufügen (z.B. Milch)">
+                <input type="number" data-shopping-list-target="newItemAmount" value="1" style="width: 70px;">
+                <button class="btn btn-success" data-action="click->shopping-list#addItem">Hinzufügen</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Artikel</h3>
+            <div data-shopping-list-target="itemsContainer">
+                <p>Lade Artikel...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <button class="btn btn-primary" data-action="click->shopping-list#sync">Synchronisieren</button>
+            <p id="sync-status" style="font-size: 0.8rem; margin-top: 0.5rem;"></p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meine Listen - ncpList{% endblock %}
+
+{% block body %}
+    <div data-controller="shopping-list">
+        <div class="card">
+            <h2>Neue Liste erstellen</h2>
+            <div class="flex">
+                <input type="text" data-shopping-list-target="newListName" placeholder="Name der Liste (z.B. Wocheneinkauf)">
+                <button class="btn btn-success" data-action="click->shopping-list#createList">Erstellen</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Deine Listen</h2>
+            <div data-shopping-list-target="listsContainer">
+                <p>Lade Listen...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <button class="btn btn-primary" data-action="click->shopping-list#sync">Jetzt Synchronisieren</button>
+            <p id="sync-status" style="font-size: 0.8rem; margin-top: 0.5rem;"></p>
+        </div>
+    </div>
+{% endblock %}

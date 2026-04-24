@@ -1,24 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}ncpList - Deine Einkaufsliste{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🛒</text></svg>">
+        
+        <style>
+            :root {
+                --primary-color: #2c3e50;
+                --accent-color: #3498db;
+                --bg-color: #f8f9fa;
+                --text-color: #333;
+                --card-bg: #fff;
+                --border-color: #ddd;
+                --success-color: #27ae60;
+                --danger-color: #e74c3c;
+            }
 
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            header {
+                background-color: var(--primary-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            main {
+                flex: 1;
+                padding: 1rem;
+                max-width: 600px;
+                margin: 0 auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .card {
+                background: var(--card-bg);
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                border: 1px solid var(--border-color);
+            }
+
+            .btn {
+                padding: 0.8rem 1.2rem;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: opacity 0.2s;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+            }
+
+            .btn-primary { background-color: var(--accent-color); color: white; }
+            .btn-success { background-color: var(--success-color); color: white; }
+            .btn-danger { background-color: var(--danger-color); color: white; }
+
+            .btn:active { opacity: 0.8; }
+
+            input[type="text"], input[type="password"], input[type="number"], textarea {
+                width: 100%;
+                padding: 0.8rem;
+                margin: 0.5rem 0;
+                border: 1px solid var(--border-color);
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 1rem;
+            }
+
+            .list-item {
+                display: flex;
+                align-items: center;
+                padding: 0.8rem 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .list-item:last-child { border-bottom: none; }
+
+            .list-item .name { flex: 1; margin: 0 1rem; }
+            .list-item .done { text-decoration: line-through; opacity: 0.5; }
+
+            .offline-badge {
+                background: var(--danger-color);
+                color: white;
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+                font-size: 0.8rem;
+                display: none;
+                margin-left: 0.5rem;
+            }
+
+            body.is-offline .offline-badge { display: inline-block; }
+
+            /* Mobile optimization */
+            @media (max-width: 480px) {
+                main { padding: 0.5rem; }
+            }
+        </style>
+
+        {% block stylesheets %}{% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            <h1>ncpList <span class="offline-badge">Offline</span></h1>
+        </header>
+
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer>
+            <!-- Optional: Navigation oder Status -->
+        </footer>
     </body>
 </html>

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login - ncpList{% endblock %}
+
+{% block body %}
+    <div class="card" data-controller="login">
+        <h2>Login</h2>
+        <form data-action="submit->login#login">
+            <div>
+                <label for="username">Benutzername</label>
+                <input type="text" id="username" data-login-target="username" required>
+            </div>
+            <div>
+                <label for="password">Passwort</label>
+                <input type="password" id="password" data-login-target="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Einloggen</button>
+        </form>
+        <p id="login-error" style="color: var(--danger-color); display: none; margin-top: 1rem;">Login fehlgeschlagen!</p>
+    </div>
+{% endblock %}

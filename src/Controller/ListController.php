@@ -63,9 +63,7 @@ class ListController extends AbstractController
             return new JsonResponse(['error' => 'List not found'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($list->getOwner() !== $this->getUser()) {
-            return new JsonResponse(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('LIST_DELETE', $list);
 
         $entityManager->remove($list);
         $entityManager->flush();

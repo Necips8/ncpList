@@ -26,9 +26,7 @@ class ListItemController extends AbstractController
             return new JsonResponse(['error' => 'List not found'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($list->getOwner() !== $this->getUser()) {
-            return new JsonResponse(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('LIST_VIEW', $list);
 
         $data = $serializer->normalize($list->getItems(), null, ['groups' => 'item:read']);
         return new JsonResponse($data);
@@ -43,9 +41,7 @@ class ListItemController extends AbstractController
             return new JsonResponse(['error' => 'List not found'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($list->getOwner() !== $this->getUser()) {
-            return new JsonResponse(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('LIST_EDIT', $list);
 
         $data = json_decode($request->getContent(), true);
         $item = new ListItem();
@@ -70,9 +66,7 @@ class ListItemController extends AbstractController
             return new JsonResponse(['error' => 'Item not found'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($item->getList()->getOwner() !== $this->getUser()) {
-            return new JsonResponse(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('LIST_VIEW', $item->getList());
 
         $data = $serializer->normalize($item, null, ['groups' => 'item:read']);
         return new JsonResponse($data);
@@ -87,9 +81,7 @@ class ListItemController extends AbstractController
             return new JsonResponse(['error' => 'Item not found'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($item->getList()->getOwner() !== $this->getUser()) {
-            return new JsonResponse(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('LIST_EDIT', $item->getList());
 
         $data = json_decode($request->getContent(), true);
         if (isset($data['name'])) $item->setName($data['name']);
@@ -112,9 +104,7 @@ class ListItemController extends AbstractController
             return new JsonResponse(['error' => 'Item not found'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($item->getList()->getOwner() !== $this->getUser()) {
-            return new JsonResponse(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('LIST_EDIT', $item->getList());
 
         $entityManager->remove($item);
         $entityManager->flush();

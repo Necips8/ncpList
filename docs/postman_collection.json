@@ -1,0 +1,297 @@
+{
+  "info": {
+    "name": "NCP Shopping List API",
+    "description": "Postman Collection für die NCP Shopping List App API. Basis-URL: http://localhost:8000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Registrierung",
+      "item": [
+        {
+          "name": "Benutzer registrieren",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "register"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"testuser\",\n    \"password\": \"testpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.test(\"Registration successful\", function() {",
+                  "        pm.expect(pm.response.code).to.eq(201);",
+                  "    });",
+                  "} else if (pm.response.code === 400) {",
+                  "    pm.test(\"Validation error or user exists\", function() {",
+                  "        pm.expect(pm.response.code).to.eq(400);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Anmeldung",
+      "item": [
+        {
+          "name": "JWT Token erhalten",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/login_check",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "login_check"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"testuser\",\n    \"password\": \"testpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set(\"authToken\", json.token);",
+                  "        pm.test(\"Token received\", function() {",
+                  "            pm.expect(json.token).to.not.be.empty;",
+                  "        });",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Einkaufslisten",
+      "item": [
+        {
+          "name": "Alle Listen abrufen",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/lists",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lists"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", function() {",
+                  "    pm.expect(pm.response.code).to.eq(200);",
+                  "});",
+                  "pm.test(\"Response is array\", function() {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(Array.isArray(json)).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Neue Liste erstellen",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/lists",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lists"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Wocheneinkauf\",\n    \"description\": \"Für nächste Woche\",\n    \"items\": [\n        {\n            \"name\": \"Milch\",\n            \"amount\": 2\n        },\n        {\n            \"name\": \"Brot\",\n            \"amount\": 1\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201\", function() {",
+                  "    pm.expect(pm.response.code).to.eq(201);",
+                  "});",
+                  "pm.test(\"List has name\", function() {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.name).to.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Liste löschen",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/lists/{{listId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lists", "{{listId}}"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 204 or 403\", function() {",
+                  "    const code = pm.response.code;",
+                  "    pm.expect(code === 204 || code === 403 || code === 404).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Fehler-Tests",
+      "item": [
+        {
+          "name": "Ohne Token zugreifen",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/lists",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lists"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401\", function() {",
+                  "    pm.expect(pm.response.code).to.eq(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mit falschem Token",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/lists",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lists"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer invalid_token_123"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401\", function() {",
+                  "    pm.expect(pm.response.code).to.eq(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -24,7 +24,6 @@ Hinweis:
 # Programmablauf
 
     Nach erfolgreichem Login die Listen des Users anzeigen.
-    Ein Button
 
     Nach Auswahl einer Liste die Listeneinträge anzeigen. 
 

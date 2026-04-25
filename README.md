@@ -17,6 +17,8 @@ ncpList ist eine moderne, mobile-first Einkaufslisten-App, die auf Symfony 8 bas
 > ```ini
 > extension=openssl
 > extension=sodium
+> extension=pdo_sqlite
+> extension=mbstring
 > ```
 
 ---

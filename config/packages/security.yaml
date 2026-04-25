@@ -43,7 +43,7 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/login,    roles: PUBLIC_ACCESS }
-        - { path: ^/,         roles: IS_AUTHENTICATED_FULLY }
+        # - { path: ^/,         roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

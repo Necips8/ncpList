@@ -5,14 +5,14 @@
 {% block body %}
     <div class="card" data-controller="login">
         <h2>Login</h2>
-        <form data-action="submit->login#login">
+        <form action="{{ path('app_login_check') }}" method="post">
             <div>
                 <label for="username">Benutzername</label>
-                <input type="text" id="username" data-login-target="username" required>
+                <input type="text" id="username" name="_username" data-login-target="username" required>
             </div>
             <div>
                 <label for="password">Passwort</label>
-                <input type="password" id="password" data-login-target="password" required>
+                <input type="password" id="password" name="_password" data-login-target="password" required>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Einloggen</button>
         </form>

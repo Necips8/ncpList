@@ -46,4 +46,19 @@ class ShoppingListWebController extends AbstractController
 
         return $this->render('shopping_list/login.html.twig');
     }
+
+    #[Route('/login_check', name: 'app_login_check')]
+    public function loginCheck(): Response
+    {
+        // Diese Route wird von Symfony Security automatisch behandelt
+        // Sie sollte nie direkt aufgerufen werden
+        throw new \RuntimeException('You must not call this route directly');
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        // Diese Route wird von Symfony Security automatisch behandelt
+        throw new \RuntimeException('You must not call this route directly');
+    }
 }
